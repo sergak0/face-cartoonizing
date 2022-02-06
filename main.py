@@ -22,7 +22,7 @@ async def download_file(file_id, document_id):
     file_info = await bot.get_file(document_id)
     filename, file_extension = os.path.splitext(file_info.file_path)
     image_name = file_id + file_extension
-    image_path = os.path.join(PROJECT_DIR, 'bot', 'bot/photos', image_name)
+    image_path = os.path.join(PROJECT_DIR, 'photos', image_name)
     urllib.request.urlretrieve(f'https://api.telegram.org/file/bot{BOT_TOKEN}/{file_info.file_path}', image_path)
     return image_name
 

@@ -13,13 +13,13 @@ from face_aligner import get_detector
 
 
 def get_image_path(image_name):
-    return os.path.join(PROJECT_DIR, 'bot/photos', image_name)
+    return os.path.join(PROJECT_DIR, 'photos', image_name)
 
 
 class Worker:
     def __init__(self):
         self.landmarks_detector = get_detector()
-        self.model = {'merged': torch.jit.load(os.path.join(PROJECT_DIR, 'models', 'generator_merged_scripted.pt'), map_location=device),
+        self.model = {'merged': torch.jit.load(os.path.join(PROJECT_DIR, 'models', 'generator_merged_new_scripted.pt'), map_location=device),
                       'cartoon': torch.jit.load(os.path.join(PROJECT_DIR, 'models', 'generator_merged_strong_scripted.pt'), map_location=device)}
         self.transforms = A.Compose([
               A.Resize(512, 512),
