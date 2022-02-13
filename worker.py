@@ -7,7 +7,7 @@ import numpy as np
 import torch
 from albumentations.pytorch.transforms import ToTensor
 
-from config import PROJECT_DIR, device
+from config import PROJECT_DIR, device, models_path
 from face_aligner import align_image
 from face_aligner import get_detector
 
@@ -19,8 +19,8 @@ def get_image_path(image_name):
 class Worker:
     def __init__(self):
         self.landmarks_detector = get_detector()
-        self.model = {'merged': torch.jit.load(os.path.join(PROJECT_DIR, 'models', 'generator_merged_new_scripted.pt'), map_location=device),
-                      'cartoon': torch.jit.load(os.path.join(PROJECT_DIR, 'models', 'generator_merged_strong_scripted.pt'), map_location=device)}
+        self.model = {'merged': torch.jit.load(models_path['merged'], map_location=device),
+                      'cartoon': torch.jit.load(models_path['cartoon'], map_location=device)}
         self.transforms = A.Compose([
               A.Resize(512, 512),
               ToTensor()
