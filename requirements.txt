@@ -1,9 +1,0 @@
-numpy==1.19.5
-albumentations==1.0.3
-opencv_contrib_python==4.5.3.56
-tensorflow==2.6.0
-scipy==1.7.1
-torch==1.9.0
-dlib==19.22.1
-aiogram==2.19
-Pillow==9.0.1
