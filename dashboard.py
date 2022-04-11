@@ -3,6 +3,7 @@ import plotly.express as px
 from dash import html, dcc
 
 data = pd.DataFrame(columns=['time', 'user_id'])
+data.to_csv('dashboard_data.csv', index=False)
 
 
 def get_fig():
@@ -14,7 +15,6 @@ def get_fig():
         rangeselector=dict(
             buttons=list([
                 dict(step="all"),
-                dict(count=1, label="hour", step="hour", stepmode="backward"),
                 dict(count=1, label="day", step="day", stepmode="backward"),
                 dict(count=7, label="week", step="day", stepmode="backward"),
                 dict(count=1, label="month", step="month", stepmode="backward"),
@@ -40,5 +40,6 @@ def serve_layout():
 
 def new_event(time, user_id):
     data = pd.read_csv('dashboard_data.csv')
-    data = pd.concat([data, pd.DataFrame([{'time': time, 'user_id': user_id}])], axis=0)
-    data.to_csv('dashboard_data.csv')
+    data = pd.concat([data, pd.DataFrame([{'time': time.replace(hour=0, minute=0, second=0, microsecond=0), 'user_id': user_id}])], axis=0)
+    data.to_csv('dashboard_data.csv', index=False)
+
