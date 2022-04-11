@@ -1,5 +1,6 @@
 import os
 import random
+import threading
 import urllib
 
 import cv2
@@ -13,9 +14,15 @@ from aiogram.utils import executor
 from config import BOT_TOKEN, PROJECT_DIR
 from worker import Worker, get_image_path
 
+from dash import Dash
+from dashboard import serve_layout, new_event
+import datetime
+
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher(bot)
 worker = Worker()
+app = Dash(__name__)
+app.layout = serve_layout
 
 
 async def download_file(file_id, document_id):
@@ -77,7 +84,8 @@ async def handle_docs_photo(message: types.Message):
 async def inline_go_disney_answer_callback_handler1(query: types.CallbackQuery):
     mode = query.data.split('|')[1]
 
-    print(query)
+    new_event(datetime.datetime.now(), query.message.chat.id)
+
     document_id = query.message['photo'][-1].file_id
     file_id = query.message['photo'][-1].file_unique_id
     image_name = await download_file(file_id, document_id)
@@ -89,4 +97,6 @@ async def inline_go_disney_answer_callback_handler1(query: types.CallbackQuery):
     await send_image(image, query.message.chat.id)
 
 if __name__ == '__main__':
+    threading.Thread(target=app.run_server, kwargs={'host': '0.0.0.0', 'port': 1919,}, daemon=True).start()
     executor.start_polling(dp)
+

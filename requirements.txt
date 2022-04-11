@@ -1,0 +1,12 @@
+aiogram==2.18
+albumentations==0.5.2
+dash==2.3.1
+dlib==19.23.0
+numpy==1.22.1
+opencv_python_headless==4.5.5.62
+pandas==1.4.1
+Pillow==9.1.0
+plotly==5.6.0
+scipy==1.7.3
+tensorflow==2.7.0
+torch==1.10.2
