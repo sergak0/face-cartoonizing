@@ -5,6 +5,7 @@ import urllib
 
 import cv2
 import numpy as np
+import pandas as pd
 from aiogram import Bot
 from aiogram import types
 from aiogram.dispatcher import Dispatcher
@@ -15,7 +16,7 @@ from config import BOT_TOKEN, PROJECT_DIR
 from worker import Worker, get_image_path
 
 from dash import Dash
-from dashboard import serve_layout, new_event
+from dashboard import serve_layout
 import datetime
 
 bot = Bot(token=BOT_TOKEN)
@@ -23,6 +24,7 @@ dp = Dispatcher(bot)
 worker = Worker()
 app = Dash(__name__)
 app.layout = serve_layout
+data = pd.read_csv('dashboard_data.csv')
 
 
 async def download_file(file_id, document_id):
@@ -65,7 +67,7 @@ async def handle_docs_photo(message: types.Message):
     faces = worker.crop_faces(image_name)
 
     if not faces:
-        await message.answer('Не смогли не одного лица, попробуйте отправить другую фотографию')
+        await message.answer('Не смогли найти ни одного лица, попробуйте отправить другую фотографию')
         return None
 
     markup = InlineKeyboardMarkup()
@@ -84,7 +86,11 @@ async def handle_docs_photo(message: types.Message):
 async def inline_go_disney_answer_callback_handler1(query: types.CallbackQuery):
     mode = query.data.split('|')[1]
 
-    new_event(datetime.datetime.now(), query.message.chat.id)
+    global data
+    user_id = query.message.chat.id
+    data = pd.concat([data, pd.DataFrame([{'time': datetime.datetime.now().date(), 'user_id': user_id}])], axis=0)
+    data.to_csv('dashboard_data.csv', index=False)
+    need_sent_notice = (data['user_id'] == user_id).sum() % 10 == 0
 
     document_id = query.message['photo'][-1].file_id
     file_id = query.message['photo'][-1].file_unique_id
@@ -96,7 +102,11 @@ async def inline_go_disney_answer_callback_handler1(query: types.CallbackQuery):
     os.remove(path)
     await send_image(image, query.message.chat.id)
 
+    if need_sent_notice:
+        await query.message.answer('Отлично, очередные 10 фото были обработаны!\n'
+                                   'Поддежрать проект можно здесь - https://www.tinkoff.ru/cf/50xgBwSX8wN')
+
 if __name__ == '__main__':
-    threading.Thread(target=app.run_server, kwargs={'host': '0.0.0.0', 'port': 1919,}, daemon=True).start()
+    threading.Thread(target=app.run_server, kwargs={'host': '0.0.0.0', 'port': 1919}, daemon=True).start()
     executor.start_polling(dp)
 

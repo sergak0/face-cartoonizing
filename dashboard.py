@@ -42,8 +42,4 @@ def serve_layout():
     ])
 
 
-def new_event(time, user_id):
-    data = pd.read_csv('dashboard_data.csv')
-    data = pd.concat([data, pd.DataFrame([{'time': time.date(), 'user_id': user_id}])], axis=0)
-    data.to_csv('dashboard_data.csv', index=False)
 
