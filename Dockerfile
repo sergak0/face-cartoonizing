@@ -1,7 +1,5 @@
 FROM python
 
-USER user
-
 RUN pip install --upgrade pip && pip install wheel
 
 WORKDIR /
