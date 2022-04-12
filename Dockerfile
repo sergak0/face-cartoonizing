@@ -11,7 +11,7 @@ RUN pip install -r /requirements.txt
 COPY . /
 
 WORKDIR /
-CMD "python3 main.py"
+CMD "python3 /main.py"
 
 # docker build -t face-cartonizing .
 # docker run --name face-cartonizing --rm -p 1919:1919 face-cartonizing
