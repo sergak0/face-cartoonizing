@@ -1,6 +1,6 @@
 FROM python:3
 
-RUN pip install --upgrade pip && pip install wheel
+RUN pip install --upgrade pip setuptools wheel
 
 WORKDIR /
 
