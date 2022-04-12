@@ -102,9 +102,9 @@ async def inline_go_disney_answer_callback_handler1(query: types.CallbackQuery):
     os.remove(path)
     await send_image(image, query.message.chat.id)
 
-    if need_sent_notice:
-        await query.message.answer('Отлично, очередные 10 фото были обработаны!\n'
-                                   'Поддежрать проект можно здесь - https://www.tinkoff.ru/cf/50xgBwSX8wN')
+    # if need_sent_notice:
+    #     await query.message.answer('Отлично, очередные 10 фото были обработаны!\n'
+    #                                'Поддежрать проект можно здесь - https://www.tinkoff.ru/cf/50xgBwSX8wN')
 
 if __name__ == '__main__':
     threading.Thread(target=app.run_server, kwargs={'host': '0.0.0.0', 'port': 1919}, daemon=True).start()
