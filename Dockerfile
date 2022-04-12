@@ -1,6 +1,7 @@
 FROM python:3
 
 RUN pip install --upgrade pip setuptools wheel
+RUN snap install cmake --classic
 
 WORKDIR /
 
