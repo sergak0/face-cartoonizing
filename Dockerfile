@@ -1,9 +1,8 @@
 FROM python:3
 
 
-RUN apt-get update && apt-get install snapd -y
+RUN apt-get update && apt-get install cmake -y
 RUN pip install --upgrade pip setuptools wheel
-RUN snap install cmake --classic
 
 WORKDIR /
 
