@@ -13,4 +13,4 @@ COPY . /
 CMD ["python3", "/main.py"]
 
 # docker build -t face-cartonizing .
-# docker run --name face-cartonizing --rm -d -p 1919:1919 -v /root/face-cartoonizing/models:/models face-cartonizing
+# docker run --name face-cartonizing --rm --cpu-period=100000 --cpu-quota=500000 -d -p 1919:1919 -v /root/face-cartoonizing/models:/models face-cartonizing
